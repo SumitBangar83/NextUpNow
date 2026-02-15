@@ -1,13 +1,7 @@
 import asyncHandler from "express-async-handler";
-import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-
-// Helper function to generate JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-};
+import generateToken from "../utils/jwt.js";
+import { isValidGmail } from "../utils/validations.js";
 
 // @desc    Register a new user
 // @route   POST /api/users/register
@@ -21,6 +15,9 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Please fill all fields");
   }
 
+  if (!isValidGmail(email)) {
+    throw new Error("please enter valid email")
+  }
   // 2. Check if user already exists
   const userExists = await User.findOne({ email });
 
@@ -55,7 +52,13 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    throw new Error("please enter all fields")
+  }
 
+  if (!isValidGmail(email)) {
+    throw new Error("please enter valid email")
+  }
   // 1. Find user by email
   const user = await User.findOne({ email });
 

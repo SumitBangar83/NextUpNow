@@ -1,0 +1,4 @@
+NextUpBackend/.env
+frontend/.env
+NextUpBackend/node_modules
+frontend/node_modules

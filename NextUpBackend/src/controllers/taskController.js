@@ -49,7 +49,7 @@ const createTask = asyncHandler(async (req, res) => {
 // @access  Private
 const getTasks = asyncHandler(async (req, res) => {
   // Sirf logged-in user ke tasks dhundo
-  const tasks = await Task.find({ userId: req.user._id });
+  // const tasks = await Task.find({ userId: req.user._id });
   res.status(200).json(tasks);
 });
 
